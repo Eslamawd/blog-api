@@ -97,7 +97,7 @@ function validateLoginUser(obj) {
 function validateUpdateUser(obj) {
     const Schema = Joi.object({
         username: Joi.string().trim().min(4).max(40).required(),
-        password: Joi.string().trim().min(8).max(15).required(),
+        password: Joi.string().trim().max(15).min(8),
         bio: Joi.string().max(77)
     })
     return Schema.validate(obj)

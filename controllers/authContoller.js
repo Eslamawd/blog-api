@@ -46,7 +46,7 @@ const sendEmail = require("../utils/sendEmail")
     //creating new token 
     const verifyctionToken = new Verification({
         userId: user._id,
-        token: crypto.randomBytes(32).toString("hex"),
+        token: crypto.randomBytes(32).toString("hex")
     })
     await verifyctionToken.save();
 
@@ -61,7 +61,7 @@ const sendEmail = require("../utils/sendEmail")
 
      // sending email (verify email) 
 
-     await sendEmail(user.email,"Verify Your Email",htmlTemplate)
+     await sendEmail(user.email, "Verify Your Email", htmlTemplate)
 
 
 
