@@ -16,4 +16,4 @@ router.post("/login", loginUserCtrl)
 router.get("/:userId/verify/:token", verifyUserAccountCtrl)
 
 
-module.exports = router
+module.exports = router;

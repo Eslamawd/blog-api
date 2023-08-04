@@ -166,8 +166,8 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
     }
 
     const tokenVerify = await Verification.findOne({
-        user: user._id,
-        token: req.params.token,
+        userId: user._id,
+        token: `${req.params.token}%7d`
     })
 
     if(!tokenVerify) {

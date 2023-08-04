@@ -17,4 +17,4 @@ router.route("/:id")
     .delete(validateOpjectId, verifyToken, deleteCommentsCtrl)
     .put(validateOpjectId, verifyToken, updateCommentsCtrl)
 
-module.exports = router
+module.exports = router;
