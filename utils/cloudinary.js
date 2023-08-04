@@ -21,7 +21,6 @@ const cloudinaryUploadImage = async(fileToUpload) => {
     }
 }
 
-
 const cloudinaryRemoveAllImage = async(paplicIds) => {
     try {
         const result = await cloudinary.v2.api.delete_resources(paplicIds)
