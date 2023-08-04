@@ -169,7 +169,7 @@ module.exports.getAllUserProfileCtrl = asyncHandler(async (req, res) => {
     //get the puplic id from posts
     const posts = await Post.find({ user: user._id})
 
-    const paplicIds = posts?.map(((post) => post.image.paplicId))
+    const paplicIds = posts?.map(((post) => post.image.puplicId))
     //dlete all posts image from cloudinary
     if(paplicIds?.length > 0) {
         await cloudinaryRemoveAllImage(paplicIds)
