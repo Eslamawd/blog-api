@@ -177,7 +177,7 @@ module.exports.getAllUserProfileCtrl = asyncHandler(async (req, res) => {
 
 
     //delete the profile image 
-    if(user.profilePhoto.puplicId !== null) {
+    if(user.profilePhoto.publicId !== null) {
 
         await cloudinaryRemoveImage(user.profilePhoto.publicId)
     }
