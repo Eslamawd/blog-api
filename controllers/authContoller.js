@@ -50,7 +50,7 @@ const sendEmail = require("../utils/sendEmail")
     })
     await verifyctionToken.save();
 
-    const link = `${process.env.DOMEN_API}/users/${user._id}/verify/${verifyctionToken.token}`
+    const link = `${process.env.DOMEN_API}/users/${user._id}/verify/${verifyctionToken.token}/`;
 
     const htmlTemplate = `
     <div>
@@ -117,7 +117,7 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
             await verificationToken.save()
            
         }
-        const link = `${process.env.DOMEN_API}/users/${user._id}/verify/${verificationToken.token}`
+        const link = `${process.env.DOMEN_API}/users/${user._id}/verify/${verificationToken.token}/`
 
         const htmlTemplate = `
         <div>
@@ -126,7 +126,7 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
         </div>
         `
         
-        await sendEmail(user.email,"Verify Your Email",htmlTemplate)
+        await sendEmail(user.email, "Verify Your Email", htmlTemplate)
         return res
         .status(400)
         .json({message: ` please verify we sent to ${user.email}`})
@@ -168,13 +168,14 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
     const tokenVerify = await Verification.findOne({
         userId: user._id,
         token: req.params.token
-    })
+    });
 
     if(!tokenVerify) {
         return res.status(400).json({message: "invaledlink"})
     }
 
-    user.isAccountVerified = true
+    user.isAccountVerified = true;
+
     await user.save()
 
     await tokenVerify.remove()

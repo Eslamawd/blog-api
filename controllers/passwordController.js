@@ -37,7 +37,7 @@ const sendEmail = require("../utils/sendEmail")
     }
     // creating link
     
-    const link = `${process.env.DOMEN_API}/reset-password/${user._id}/${verificationToken.token}`
+    const link = `${process.env.DOMEN_API}/reset-password/${user._id}/${verificationToken.token}/a`;
     // creating htmlTamplate
     const htmlTemplate = `
     <div>
@@ -47,7 +47,7 @@ const sendEmail = require("../utils/sendEmail")
     `
     // sending Email
     
-    await sendEmail(user.email,"Reset password ",htmlTemplate)
+    await sendEmail(user.email, "Reset password ", htmlTemplate)
     //response to the clint
     
     res.status(200).json({ message: "reset password to email please cheack on email "})
