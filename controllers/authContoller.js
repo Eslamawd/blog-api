@@ -50,7 +50,7 @@ const sendEmail = require("../utils/sendEmail")
     })
     await verifyctionToken.save();
 
-    const link = `${process.env.DOMEN_API}/users/${user._id}/verify/${verifyctionToken.token}/`;
+    const link = `${process.env.DOMEN_API}/users/${user._id}/verify/${verifyctionToken.token}/a`;
 
     const htmlTemplate = `
     <div>
@@ -117,7 +117,7 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
             await verificationToken.save()
            
         }
-        const link = `${process.env.DOMEN_API}/users/${user._id}/verify/${verificationToken.token}/`
+        const link = `${process.env.DOMEN_API}/users/${user._id}/verify/${verificationToken.token}/a`
 
         const htmlTemplate = `
         <div>
@@ -160,6 +160,9 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
 
 
  module.exports.verifyUserAccountCtrl = asyncHandler(async (req, res ) => {
+
+    
+
     const user = await User.findById(req.params.userId)
     if(!user) {
         return res.status(400).json({message: "invaledlink"})

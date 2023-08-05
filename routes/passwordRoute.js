@@ -17,4 +17,4 @@ router.route("/reset-password/:userId/:token")
 
 
 
-module.exports = router;
+module.exports = router
