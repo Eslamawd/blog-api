@@ -33,7 +33,7 @@ const sendEmail = require("../utils/sendEmail")
     if(!verificationToken) {
         verificationToken = new Verification.findOne({
             userId: user._id,
-            token: crypto.randomBytes(32).toString("hex")
+            token: crypto.randomBytes(32).toString("hex"),
         });
         await verificationToken.save();
     }
@@ -99,34 +99,34 @@ const sendEmail = require("../utils/sendEmail")
 
  module.exports.resetPasswordCtrl = asyncHandler(async (req, res) => {
 
-    const { error } = validatePassword(req.body)
+    const { error } = validatePassword(req.body);
     if (error) { 
         return res.status(400).json({ message: error.details[0].message })
     }
-    const user = User.findById(req.params.userId)
+    const user = User.findById(req.params.userId);
     if(!user) {
         return res.status(400).json({ message: "not user email exist!" })
     }
 
     const verificationToken = await Verification.findOne({
         userId: user._id,
-        token: req.params.token
-    })
+        token: req.params.token,
+    });
     if(!verificationToken) {
         return res.status(400).json({ message: "not user  exist!" })
     }
     if(!user.isAccountVerified) {
-        user.isAccountVerified = true
+        user.isAccountVerified = true;
     }
 
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(req.body.password, salt)
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-    user.password = hashedPassword
-    await user.save()
-    await verificationToken.remove()
+    user.password = hashedPassword;
+    await user.save();
+    await verificationToken.remove();
 
-    res.status(200).json({ message: "password reset successfully"})
+    res.status(200).json({ message: "password reset successfully"});
 
     
 

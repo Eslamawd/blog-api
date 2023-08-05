@@ -51,8 +51,8 @@ app.use("/api/categories", require("./routes/categoryRoute"));
 app.use("/api/password", require("./routes/passwordRoute"));
 
 // Error handeler 
-app.use(notFound)
-app.use(errorHandler)
+app.use(notFound);
+app.use(errorHandler);
 
 
 
