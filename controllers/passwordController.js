@@ -32,7 +32,7 @@ const sendEmail = require("../utils/sendEmail")
         verificationToken = new Verification.findOne({
             userId: user._id,
             token: crypto.randomBytes(32).toString("hex")
-        })
+        });
         await verificationToken.save()
     }
     // creating link
