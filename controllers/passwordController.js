@@ -28,7 +28,7 @@ const sendEmail = require("../utils/sendEmail")
         return res.status(404).json({message: "User with given email not found"})
     }
     // creating Verification
-    let verificationToken = await Verification.findOne({ userId: user._id });
+    const verificationToken = await Verification.findOne({ userId: user._id });
 
     if(!verificationToken) {
         verificationToken = new Verification.findOne({

@@ -18,7 +18,7 @@ const sendEmail = require("../utils/sendEmail")
 
  module.exports.registerUserCtrl = asyncHandler(async (req, res) => {
     // validation
-    const { error } = validateRegisterUser(req.body)
+    const { error } = validateRegisterUser(req.body);
 
      if (error) {
         return res.status(400).json({ message: error.details[0].message })
@@ -46,7 +46,7 @@ const sendEmail = require("../utils/sendEmail")
     //creating new token 
     const verifyctionToken = new Verification({
         userId: user._id,
-        token: crypto.randomBytes(32).toString("hex")
+        token: crypto.randomBytes(32).toString("hex"),
     })
     await verifyctionToken.save();
 
@@ -106,7 +106,7 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
 
     // sending email (verify email )
     if(!user.isAccountVerified) {
-        let verificationToken = await Verification.findOne({
+        const verificationToken = await Verification.findOne({
             userId: user._id
         })
         if(!verificationToken) {
@@ -161,27 +161,27 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
 
  module.exports.verifyUserAccountCtrl = asyncHandler(async (req, res ) => {
 
-    
 
-    const user = await User.findById(req.params.userId)
+
+    const user = await User.findById(req.params.userId);
     if(!user) {
-        return res.status(400).json({message: "invaledlink"})
+        return res.status(400).json({ message: "invaledlink" })
     }
 
     const tokenVerify = await Verification.findOne({
         userId: user._id,
-        token: req.params.token
+        token: req.params.token,
     });
 
     if(!tokenVerify) {
-        return res.status(400).json({message: "invaledlink"})
+        return res.status(400).json({ message: "invaledlink" })
     }
 
     user.isAccountVerified = true;
 
-    await user.save()
+    await user.save();
 
-    await tokenVerify.remove()
+    await tokenVerify.remove();
     
     res.status(200).json({ message: "Your account verified "})
  })
