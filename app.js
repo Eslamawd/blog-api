@@ -31,6 +31,8 @@ app.use(cors({
 
 // MIDDLEWARES
 
+app.set('trust proxy', true);
+
 app.use(helmet());
 
 app.use(hpp());
