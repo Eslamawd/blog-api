@@ -11,23 +11,16 @@ const hpp = require("hpp");
 const { errorHandler, notFound } = require("./middlewares/error");
 require('dotenv').config();
 
-const PORT = process.env.PORT || 4000;
 
 
 // conction mongo db
 connectDB();
 
-app.use(express.json())
-
-
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(express.json());
+app.use(static());
 
 
 
-// Cors Policy
-app.use(cors({
-  origin: "https://blog-side.onrender.com"
-}));
 
 // MIDDLEWARES
 
@@ -40,10 +33,17 @@ app.use(hpp());
 app.use(xss());
 
 app.use(ratelimiting({
-   windowMs: 10 * 60 * 1000,
-    max: 170,
-   }
-    ));
+  windowMs: 10 * 60 * 1000,
+  max: 170,
+}
+));
+
+// Cors Policy
+app.use(cors({
+  origin: "https://blog-side.onrender.com"
+}));
+
+
 //Routes
 app.use("/api/auth", require("./routes/authRoute"));
 app.use("/api/users", require("./routes/usersRoute"));
@@ -63,6 +63,8 @@ app.use(errorHandler);
 
 
 // RUNING THE SERVER
+
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () =>
   console.log(

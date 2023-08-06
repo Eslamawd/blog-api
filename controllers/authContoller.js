@@ -160,12 +160,10 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
 
 
  module.exports.verifyUserAccountCtrl = asyncHandler(async (req, res ) => {
-
-
-
+    
     const user = await User.findById(req.params.userId);
     if(!user) {
-        return res.status(400).json({ message: "invaledlink" })
+        return res.status(400).json({ message: "invaledlink" });
     }
 
     const tokenVerify = await Verification.findOne({
@@ -174,7 +172,7 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
     });
 
     if(!tokenVerify) {
-        return res.status(400).json({ message: "invaledlink" })
+        return res.status(400).json({ message: "invaledlink" });
     }
 
     user.isAccountVerified = true;

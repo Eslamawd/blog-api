@@ -106,7 +106,7 @@ function validateUpdateUser(obj) {
 // validate Email
 function validateEmail(obj) {
     const Schema = Joi.object({
-        email: Joi.string().trim().min(4).max(40).required().email(),
+        email: Joi.string().trim().min(4).max(40).required().email()
     })
     return Schema.validate(obj)
 }
