@@ -17,7 +17,6 @@ require('dotenv').config();
 connectDB();
 
 app.use(express.json());
-app.use(static());
 
 
 
