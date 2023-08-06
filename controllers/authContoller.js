@@ -106,7 +106,7 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
 
     // sending email (verify email )
     if(!user.isAccountVerified) {
-        const verificationToken = await Verification.findOne({
+        let verificationToken = await Verification.findOne({
             userId: user._id
         })
         if(!verificationToken) {
@@ -166,7 +166,7 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: "invaledlink" });
     }
 
-    const tokenVerify = await Verification.findOne({
+    let tokenVerify = await Verification.findOne({
         userId: user._id,
         token: req.params.token,
     });
