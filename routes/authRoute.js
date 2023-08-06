@@ -14,7 +14,8 @@ router.route("/register")
 router.post("/login", loginUserCtrl)
 
 // api/auth/:userId/verify/:token
-router.get("/:userId/verify/:token", valdiateOpjectUserId, verifyUserAccountCtrl)
+router.route("/:userId/verify/:token")
+ .get(valdiateOpjectUserId, verifyUserAccountCtrl)
 
 
-module.exports = router;
+module.exports = router

@@ -57,7 +57,7 @@ const sendEmail = require("../utils/sendEmail")
     <p>Click on Link to Verify </p>
     <a href="${link}}">Verify</a>
     </div>
-    `
+    `;
 
      // sending email (verify email) 
 
@@ -145,8 +145,8 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
         isAdmin: user.isAdmin,
         profilePhoto: user.profilePhoto,
         token
-    })
-})
+    });
+});
 
 
 
@@ -160,7 +160,7 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
 
 
  module.exports.verifyUserAccountCtrl = asyncHandler(async (req, res ) => {
-    
+
     const user = await User.findById(req.params.userId);
     if(!user) {
         return res.status(400).json({ message: "invaledlink" });
@@ -181,7 +181,7 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
 
     await tokenVerify.remove();
     
-    res.status(200).json({ message: "Your account verified "})
- })
+    res.status(200).json({ message: "Your account verified "});
+ });
 
 

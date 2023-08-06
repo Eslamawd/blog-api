@@ -23,7 +23,6 @@ app.use(express.json());
 
 // MIDDLEWARES
 
-app.set('trust proxy', true);
 
 app.use(helmet());
 
