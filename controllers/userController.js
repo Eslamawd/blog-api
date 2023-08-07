@@ -67,7 +67,7 @@ module.exports.getAllUserProfileCtrl = asyncHandler(async (req, res) => {
         $set: {
             username: req.body.username,
             password: req.body.password,
-            bio: req.body.bio
+            bio: req.body.bio,
         }
     }, { new: true }).select("-password")
     .populate("posts")
