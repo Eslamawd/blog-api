@@ -30,7 +30,9 @@ router.route("/count")
 // api/users/requist
 router.route("/requist")
             .get(verifyToken, getAllUsersRequests)
-            .put("/:id", verifyToken, addNewRequest)
+
+router.route("/requist/:id")
+            .put(verifyToken, addNewRequest)
 
 // api/users/frinds
 router.route("/frinds")
