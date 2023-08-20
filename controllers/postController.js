@@ -74,11 +74,11 @@ module.exports.createPostCtrl = asyncHandler(async (req, res) => {
    .skip((pageNumber - 1) * POST_PAGE) 
    .limit(POST_PAGE)
    .sort({ createdAt: -1})
-   .populate("user", ["-password"])
+   .populate("user", ["-password"]);
    } else if (category) {
     posts = await Post.find({ category })
                 .sort({ createdAt: -1})
-                .populate("user", ["-password"])
+                .populate("user", ["-password"]);
    } else {
     posts = await Post.find().sort({ createdAt: -1 })
                 .populate("user", ["-password"])

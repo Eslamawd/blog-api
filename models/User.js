@@ -51,6 +51,29 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    sendRequist: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+
+        }
+    ],
+
+    requestFrinds: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+
+        }
+    ],
+    frinds: 
+    [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+
+        }
+    ],
 
 
 }, {
@@ -64,6 +87,16 @@ UserSchema.virtual("posts", {
     ref: "Post",
     foreignField: "user",
     localField: "_id",
+})
+UserSchema.virtual("requist", {
+    ref: "User",
+    foreignField: "_id",
+    localField: "requestFrinds",
+})
+UserSchema.virtual("frind", {
+    ref: "User",
+    foreignField: "_id",
+    localField: "frinds",
 })
 
 // genrate Auth Token 

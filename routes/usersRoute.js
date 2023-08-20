@@ -3,6 +3,7 @@ const { getAllUsersCtrl, getAllUserProfileCtrl, updateUserProfileCtrl, getUserCo
 const { virfyTokenAndAdmin, virfyTokenAndOnlyUser, verifyToken, virfyTokenAndAthorization } = require("../middlewares/virfyToken")
 const validateOpjectId = require("../middlewares/validateOpjectId")
 const photoUpload = require("../middlewares/photoUpload")
+const { getAllUsersRequests, addNewRequest, getAllUsersFrends, addNewFrind, deleteRequist } = require("../controllers/frindsController")
 
 // api/users/profile
 router.route("/profile")
@@ -25,6 +26,21 @@ router.route("/profile/profile-photo-upload")
 // api/users/profile
 router.route("/count")
             .get(virfyTokenAndAdmin ,getUserCountCtrl)
+
+// api/users/requist
+router.route("/requist")
+            .get(verifyToken, getAllUsersRequests)
+            .put("/:id", verifyToken, addNewRequest)
+
+// api/users/frinds
+router.route("/frinds")
+            .get(verifyToken, getAllUsersFrends)
+
+
+router.route("/frinds/:id")
+        .put(verifyToken, addNewFrind)
+        .delete(verifyToken, deleteRequist)
+            
 
 
 module.exports = router
