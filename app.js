@@ -10,6 +10,9 @@ const helmet = require("helmet");
 const hpp = require("hpp");
 const { errorHandler, notFound } = require("./middlewares/error");
 require('dotenv').config();
+const server = require('http').createServer(app)
+const socketIo = require('socket.io');
+const io = socketIo(server);
 
 
 
@@ -41,6 +44,12 @@ app.use(cors({
   origin: "https://blog-side.onrender.com"
 }));
 
+//socket io
+io.on('connection', (socket) => {
+  console.log(socket)
+
+})
+
 
 //Routes
 app.use("/api/auth", require("./routes/authRoute"));
@@ -64,7 +73,7 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 4000;
 
-app.listen(PORT, () =>
+server.listen(PORT, () =>
   console.log(
     `Server is running in ${process.env.NODE_ENV} mode on port ${PORT}`
   )

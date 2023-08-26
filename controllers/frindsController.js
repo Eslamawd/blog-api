@@ -5,7 +5,7 @@ const { User } = require("../models/User")
 
 
 /**-------------------------------------------------
- * @desc Get all users
+ * @desc Get all users requist frinds
  * @router /api/users/requist
  * @method GET
  * @access private (only user)
@@ -26,7 +26,7 @@ const { User } = require("../models/User")
         res.status(200).json(users)
         
     } catch (error) {
-        res.status(404).json({message: "not found"})
+        throw new Error(error)
         
     }
 })
@@ -42,33 +42,45 @@ const { User } = require("../models/User")
 
  module.exports.addNewRequest = asyncHandler(async (req, res) => {
 
-    const loggedInUser = req.user.id
-    const { id: userId } = req.params
-
-    let user = await User.findById(userId)
-    if (!user) {
-        return res.status(404).json({ message: "user not found"})
+    try {
+        const loggedInUser = req.user.id
+        const { id: userId } = req.params
+    
+        const user = await User.findById(loggedInUser)
+        if (!user) {
+            return res.status(404).json({ message: "user not found" })
+        }
+    
+        const isUserFrind = user.requestFrinds.find((userI) => userI.toString() === userId)
+        const isUserRequist = user.sendRequist.find((userI) => userI.toString() === userId)
+        const isUserMfrends = user.frinds.find((userI) => userI.toString() === userId)
+    
+        if (!isUserFrind || !isUserRequist  || !isUserMfrends) {
+            const newUserAdd = await User.findByIdAndUpdate(loggedInUser, {
+                $push: {
+                    sendRequist: userId,
+                }
+            }, {
+                new: true
+            })
+            const newRequistUser = await User.findByIdAndUpdate(userId, {
+                $push: {
+                    requestFrinds: loggedInUser,
+                }
+            }, {
+                new: true
+            })
+            const newReq = newRequistUser.requestFrinds
+    
+            return res.status(200).json(newReq)
+        } else {
+           return res.status(400).json({ message: "Add Request New" });
+        }
+        
+    } catch (error) {
+        throw new Error(error)
+        
     }
-
-    const isUserFrind = user.requestFrinds.find((userI) => userI.toString() === loggedInUser)
-
-    if (!isUserFrind) {
-        user.updateOne({
-            $push: {
-                sendRequist: userId,
-            }
-        }, {
-            new: true
-        })
-        user = await User.findByIdAndUpdate(userId, {
-            $push: {
-                requestFrinds: loggedInUser,
-            }
-        }, {
-            new: true
-        })
-    }
-    res.status(200).json({ message: "Add Request New" });
  })
 
 
@@ -94,7 +106,7 @@ const { User } = require("../models/User")
         res.status(200).json(users)
         
     } catch (error) {
-        res.status(404).json({message: "not found"})
+        throw new Error(error)
         
     }
 })
@@ -122,7 +134,7 @@ const { User } = require("../models/User")
         const isUserFrind = user.requestFrinds.find((user) => user.toString() === userId)
     
         if (isUserFrind) {
-            user.updateOne({
+            const addNewFrind = await User.findByIdAndUpdate(loggedInUser, {
                 $pull: {
                     requestFrinds: userId,
                 },
@@ -133,7 +145,7 @@ const { User } = require("../models/User")
                 new: true
             })
 
-            user = await User.findByIdAndUpdate(userId, {
+            const addReqToFrind = await User.findByIdAndUpdate(userId, {
                 $push: {
                     frinds: loggedInUser,
                 },
@@ -143,12 +155,15 @@ const { User } = require("../models/User")
             },{
                 new: true
             })
+
+            const frinds = addNewFrind.frinds
+
+            return res.status(200).json(frinds)
         } else {
             return res.status(404).json({message: "not access"})
         }
-        res.status(200).json({ message: "Add Request New" });
     } catch (error) {
-        console.log(error)
+        throw new Error(error)
     }
 
  })
@@ -156,7 +171,7 @@ const { User } = require("../models/User")
 
 
   /**-------------------------------------------------
- * @desc add new frind from rquists
+ * @desc delete frind from rquists
  * @router /api/users/frinds/:id
  * @method DELETE
  * @access private (only user)
@@ -174,9 +189,12 @@ const { User } = require("../models/User")
         }
     
         const isUserFrind = user.requestFrinds.find((user) => user.toString() === userId)
+        const isUserRequist = user.sendRequist.find((user) => user.toString() === userId)
+        const isUserFrindly = user.frinds.find((user) => user.toString() === userId)
+
     
         if (isUserFrind) {
-            user.updateOne({
+          const deleteReq = await User.findByIdAndUpdate(loggedInUser, {
                 $pull: {
                     requestFrinds: userId,
                 },
@@ -184,19 +202,59 @@ const { User } = require("../models/User")
                 new: true
             })
 
-            user = await User.findByIdAndUpdate(userId, {
+            const deleteSenReq = await User.findByIdAndUpdate(userId, {
                 $pull: {
                     sendRequist: loggedInUser,
                 }
             },{
                 new: true
             })
+            const requist = deleteReq.requestFrinds
+            return res.status(200).json(requist)
+
+        } else if(isUserRequist) {
+            const deleteReq = await User.findByIdAndUpdate(loggedInUser, {
+                $pull: {
+                    sendRequist: userId,
+                },
+            }, {
+                new: true
+            })
+
+            const deleteSenReq = await User.findByIdAndUpdate(userId, {
+                $pull: {
+                    requestFrinds: loggedInUser,
+                }
+            },{
+                new: true
+            })
+            const requist = deleteReq.sendRequist
+            return res.status(200).json(requist)
+
+        } else if(isUserFrindly) {
+            const deleteFrind = await User.findByIdAndUpdate(loggedInUser, {
+                $pull: {
+                    frinds: userId,
+                },
+            }, {
+                new: true
+            })
+
+            const deleteYfrind = await User.findByIdAndUpdate(userId, {
+                $pull: {
+                    frinds: loggedInUser,
+                }
+            },{
+                new: true
+            })
+            const requist = deleteFrind.frinds
+            return res.status(200).json(requist)
         } else {
             return res.status(404).json({message: "not access"})
         }
-        res.status(200).json({ message: "Deleted Requist" });
     } catch (error) {
-        console.log(error)
+        throw new Error(error)
+  
     }
 
  })

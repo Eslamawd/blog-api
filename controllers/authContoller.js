@@ -143,6 +143,9 @@ module.exports.loginUserCtrl = asyncHandler(async (req, res) => {
         _id: user._id,
         username: user.username,
         isAdmin: user.isAdmin,
+        frinds: user.frinds,
+        sendRequist: user.sendRequist,
+        requestFrinds: user.requestFrinds,
         profilePhoto: user.profilePhoto,
         token
     });
