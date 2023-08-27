@@ -55,7 +55,7 @@ const { User } = require("../models/User")
         const isUserRequist = user.sendRequist.find((userI) => userI.toString() === userId)
         const isUserMfrends = user.frinds.find((userI) => userI.toString() === userId)
     
-        if (!isUserFrind || !isUserRequist  || !isUserMfrends) {
+        if (!isUserFrind && !isUserRequist  && !isUserMfrends) {
             const newUserAdd = await User.findByIdAndUpdate(loggedInUser, {
                 $push: {
                     sendRequist: userId,
@@ -70,11 +70,11 @@ const { User } = require("../models/User")
             }, {
                 new: true
             })
-            const newReq = newRequistUser.requestFrinds
+            const newReq = newUserAdd.sendRequist
     
             return res.status(200).json(newReq)
         } else {
-           return res.status(400).json({ message: "Add Request New" });
+           return res.status(400).json({ message: "What happen" });
         }
         
     } catch (error) {
