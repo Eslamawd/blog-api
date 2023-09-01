@@ -32,7 +32,7 @@ router.route("/requist")
             .get(verifyToken, getAllUsersRequests)
 
 router.route("/requist/:id")
-            .put(verifyToken, addNewRequest)
+            .put(validateOpjectId ,verifyToken, addNewRequest)
 
 // api/users/frinds
 router.route("/frinds")
