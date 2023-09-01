@@ -15,7 +15,9 @@ const { Server } = require("socket.io");
 
 
 const httpServer = createServer(app);
-const io = new Server(httpServer, { /* options */ });
+const io = new Server(httpServer, { cors: {
+  origin: "https://blog-side.onrender.com",
+}});
 
 
 
