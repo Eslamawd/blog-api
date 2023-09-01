@@ -46,7 +46,7 @@ const { User } = require("../models/User")
         const loggedInUser = req.user.id
         const { id: userId } = req.params
     
-        const user = await User.findById(loggedInUser)
+        let user = await User.findById(loggedInUser)
         if (!user) {
             return res.status(404).json({ message: "user not found" })
         }
@@ -56,26 +56,25 @@ const { User } = require("../models/User")
         const isUserMfrends = user.frinds.find((userI) => userI.toString() === userId)
     
         if (!isUserFrind && !isUserRequist  && !isUserMfrends) {
-            const newUserAdd = await User.findByIdAndUpdate(loggedInUser, {
+            user = await User.findByIdAndUpdate(loggedInUser, {
                 $push: {
                     sendRequist: userId,
                 }
             }, {
                 new: true
             })
-            const newRequistUser = await User.findByIdAndUpdate(userId, {
+            user = await User.findByIdAndUpdate(userId, {
                 $push: {
                     requestFrinds: loggedInUser,
                 }
             }, {
                 new: true
             })
-            const newReq = newUserAdd.sendRequist
-    
-            return res.status(200).json(newReq)
         } else {
            return res.status(400).json({ message: "What happen" });
         }
+
+        res.status(200).json(user.sendRequist)
         
     } catch (error) {
         throw new Error(error)
