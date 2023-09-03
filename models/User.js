@@ -56,7 +56,7 @@ const UserSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
 
-        }
+        },
     ],
 
     requestFrinds: [
@@ -64,7 +64,7 @@ const UserSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
 
-        }
+        },
     ],
     frinds: 
     [
@@ -72,7 +72,7 @@ const UserSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
 
-        }
+        },
     ],
 
 

@@ -63,6 +63,7 @@ app.use("/api/posts", require("./routes/postsRoute"));
 app.use("/api/comments", require("./routes/commentsRoute"));
 app.use("/api/categories", require("./routes/categoryRoute"));
 app.use("/api/password", require("./routes/passwordRoute"));
+app.use("/api/frind", require("./routes/frindsRoute"));
 
 // Error handeler 
 app.use(notFound);
