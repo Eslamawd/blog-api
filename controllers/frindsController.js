@@ -1,5 +1,4 @@
 const asyncHandler = require("express-async-handler")
-const mongoose = require('mongoose')
 const { User } = require("../models/User")
 
 
@@ -44,10 +43,11 @@ const { User } = require("../models/User")
 
     try {
         const loggedInUser = req.user.id
-        const { id: userId } = req.params
+        const  userId  = req.params.id
     
         let user = await User.findById(loggedInUser)
-        if (!user) {
+        let reqUser = await User.findById(userId)
+        if (!user && !reqUser) {
             return res.status(404).json({ message: "user not found" })
         }
     
@@ -63,18 +63,21 @@ const { User } = require("../models/User")
             }, {
                 new: true
             })
-            user = await User.findByIdAndUpdate(userId, {
+            reqUser = await User.findByIdAndUpdate(userId, {
                 $push: {
                     requestFrinds: loggedInUser,
                 }
             }, {
                 new: true
             })
+            
         } else {
            return res.status(400).json({ message: "What happen" });
         }
 
-        res.status(200).json(user.sendRequist)
+
+        const sendRequistUser = user.sendRequist
+        res.status(200).json(sendRequistUser)
         
     } catch (error) {
         throw new Error(error)
