@@ -41,7 +41,6 @@ const { User } = require("../models/User")
 
  module.exports.addNewRequest = asyncHandler(async (req, res) => {
 
-    try {
         const loggedInUser = req.user.id
         const  userId  = req.params.id
     
@@ -63,6 +62,7 @@ const { User } = require("../models/User")
             }, {
                 new: true
             })
+
             reqUser = await User.findByIdAndUpdate(userId, {
                 $push: {
                     requestFrinds: loggedInUser,
@@ -73,17 +73,13 @@ const { User } = require("../models/User")
             
 
         const sendRequistUser = user.sendRequist
-        res.status(200).json(sendRequistUser)
+        return  res.status(200).json(sendRequistUser)
             
         } else {
            return res.status(400).json({ message: "What happen" });
         }
 
-        
-    } catch (error) {
-        throw new Error(error)
-        
-    }
+     
  })
 
 
