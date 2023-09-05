@@ -71,15 +71,11 @@ const { User } = require("../models/User")
             }, {
                 new: true
             })
-            
+        } 
+        console.log(req)
+        console.log(user)
 
-        return  res.status(200).json(user)
-            
-        } else {
-           return res.status(404).json({ message: "What happen" });
-        }
-
-     
+        res.status(200).json(user)
  })
 
 
