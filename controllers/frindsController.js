@@ -71,13 +71,14 @@ const { User } = require("../models/User")
                 new: true
             })
             
+
+        const sendRequistUser = user.sendRequist
+        res.status(200).json(sendRequistUser)
+            
         } else {
            return res.status(400).json({ message: "What happen" });
         }
 
-
-        const sendRequistUser = user.sendRequist
-        res.status(200).json(sendRequistUser)
         
     } catch (error) {
         throw new Error(error)
