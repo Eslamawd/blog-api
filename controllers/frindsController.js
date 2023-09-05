@@ -76,7 +76,7 @@ const { User } = require("../models/User")
         return  res.status(200).json(user)
             
         } else {
-           return res.status(400).json({ message: "What happen" });
+           return res.status(404).json({ message: "What happen" });
         }
 
      
