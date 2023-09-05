@@ -45,6 +45,18 @@ function virfyTokenAndOnlyUser(req, res, next) {
     })
 }
 
+function virfyTokenAndNotUser(req, res, next) {
+    verifyToken(req, res, () => {
+        if(req.user.id !== req.params.id) {
+            next();
+        } else {
+            
+            return res.status(401).json({  message: " not acccess user" });
+        }
+
+    })
+}
+
 
 function virfyTokenAndAthorization(req, res, next) {
     verifyToken(req, res, () => {
@@ -63,5 +75,6 @@ module.exports = {
     verifyToken,
     virfyTokenAndAdmin,
     virfyTokenAndOnlyUser,
-    virfyTokenAndAthorization
+    virfyTokenAndAthorization,
+    virfyTokenAndNotUser
 }

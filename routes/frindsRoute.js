@@ -2,7 +2,7 @@ const router = require("express").Router()
 const validateOpjectId = require("../middlewares/validateOpjectId")
 
 const { getAllUsersRequests, addNewRequest, getAllUsersFrends, addNewFrind, deleteRequist } = require("../controllers/frindsController")
-const { verifyToken } = require("../middlewares/virfyToken")
+const  { virfyTokenAndNotUser, verifyToken }  = require("../middlewares/virfyToken")
 
 
 
@@ -11,8 +11,7 @@ const { verifyToken } = require("../middlewares/virfyToken")
 router.route("/requi")
             .get(verifyToken, getAllUsersRequests)
 
-router.route("/requi/:id")
-            .put(validateOpjectId, verifyToken, addNewRequest)
+router.route("/requi/:id").put(validateOpjectId, virfyTokenAndNotUser, addNewRequest)
 
 // api/users/frinds
 router.route("/frinds")

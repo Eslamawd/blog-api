@@ -46,7 +46,6 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    
     isAccountVerified: {
         type: Boolean,
         default: false,
@@ -58,7 +57,6 @@ const UserSchema = new mongoose.Schema({
 
         },
     ],
-
     requestFrinds: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -74,8 +72,6 @@ const UserSchema = new mongoose.Schema({
 
         },
     ],
-
-
 }, {
     timestamps: true,
     toJSON: { virtuals: true },

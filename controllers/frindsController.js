@@ -41,12 +41,12 @@ const { User } = require("../models/User")
 
  module.exports.addNewRequest = asyncHandler(async (req, res) => {
 
-        const loggedInUser = req.user.id
-        const  userId  = req.params.id
+        const  userId  = req.params.id;
     
-        let user = await User.findById(loggedInUser)
-        let reqUser = await User.findById(userId)
-        if (!user && !reqUser) {
+        let user = await User.findById(req.user.id).lean();
+        let reqUser = await User.findById(req.params.id).lean();
+
+        if (!user || !reqUser) {
             return res.status(404).json({ message: "user not found" })
         }
     
@@ -54,26 +54,26 @@ const { User } = require("../models/User")
         const isUserRequist = user.sendRequist.find((userI) => userI.toString() === userId)
         const isUserMfrends = user.frinds.find((userI) => userI.toString() === userId)
     
-        if (!isUserFrind && !isUserRequist  && !isUserMfrends) {
-            user = await User.findByIdAndUpdate(loggedInUser, {
+        if (!isUserFrind || !isUserRequist  || !isUserMfrends) {
+
+            user = await User.findByIdAndUpdate(req.user.id, {
                 $push: {
-                    sendRequist: userId,
+                    sendRequist: req.params.id,
                 }
             }, {
                 new: true
             })
 
-            reqUser = await User.findByIdAndUpdate(userId, {
+            await User.findByIdAndUpdate(req.params.id, {
                 $push: {
-                    requestFrinds: loggedInUser,
+                    requestFrinds: req.user.id,
                 }
             }, {
                 new: true
             })
             
 
-        const sendRequistUser = user.sendRequist
-        return  res.status(200).json(sendRequistUser)
+        return  res.status(200).json(user)
             
         } else {
            return res.status(400).json({ message: "What happen" });
