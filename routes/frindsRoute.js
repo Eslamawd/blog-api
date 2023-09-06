@@ -19,8 +19,8 @@ router.route("/frinds")
 
 
 router.route("/frinds/:id")
-        .put(verifyToken, addNewFrind)
-        .delete(verifyToken, deleteRequist)
+        .put(validateOpjectId, virfyTokenAndNotUser, addNewFrind)
+        .delete(validateOpjectId, virfyTokenAndNotUser, deleteRequist)
             
 
 

@@ -151,11 +151,9 @@ const { User } = require("../models/User")
                 }
             },{
                 new: true
-            })
+            }).select('-password')
 
-            const frinds = addNewFrind.frinds
-
-            return res.status(200).json(frinds)
+            return res.status(200).json(addReqToFrind)
         } else {
             return res.status(404).json({message: "not access"})
         }
@@ -205,9 +203,9 @@ const { User } = require("../models/User")
                 }
             },{
                 new: true
-            })
-            const requist = deleteReq.requestFrinds
-            return res.status(200).json(requist)
+            }).select(password)
+            
+            return res.status(200).json(deleteSenReq)
 
         } else if(isUserRequist) {
             const deleteReq = await User.findByIdAndUpdate(loggedInUser, {
@@ -224,9 +222,9 @@ const { User } = require("../models/User")
                 }
             },{
                 new: true
-            })
-            const requist = deleteReq.sendRequist
-            return res.status(200).json(requist)
+            }).select('-password')
+         
+            return res.status(200).json(deleteSenReq)
 
         } else if(isUserFrindly) {
             const deleteFrind = await User.findByIdAndUpdate(loggedInUser, {
@@ -243,9 +241,9 @@ const { User } = require("../models/User")
                 }
             },{
                 new: true
-            })
-            const requist = deleteFrind.frinds
-            return res.status(200).json(requist)
+            }).select('-password')
+            
+            return res.status(200).json(deleteYfrind)
         } else {
             return res.status(404).json({message: "not access"})
         }
