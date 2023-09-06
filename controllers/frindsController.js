@@ -46,7 +46,7 @@ const { User } = require("../models/User")
         let user = await User.findById(req.user.id).lean();
         let reqUser = await User.findById(req.params.id).lean();
 
-        if (!user || !reqUser) {
+        if (!user && !reqUser) {
             return res.status(404).json({ message: "user not found" })
         }
     
@@ -54,7 +54,7 @@ const { User } = require("../models/User")
         const isUserRequist = user.sendRequist.find((userI) => userI.toString() === userId)
         const isUserMfrends = user.frinds.find((userI) => userI.toString() === userId)
     
-        if (!isUserFrind || !isUserRequist  || !isUserMfrends) {
+        if (!isUserFrind && !isUserRequist  && !isUserMfrends) {
 
             user = await User.findByIdAndUpdate(req.user.id, {
                 $push: {
@@ -64,18 +64,20 @@ const { User } = require("../models/User")
                 new: true
             })
 
-            await User.findByIdAndUpdate(req.params.id, {
+            user = await User.findByIdAndUpdate(req.params.id, {
                 $push: {
                     requestFrinds: req.user.id,
                 }
             }, {
                 new: true
-            })
-        } 
+            }).select("-password")
+            
+        res.status(200).json(user)
+        } else {
+            res.status(403).json({ message: "not access your requist frinds" })
+        }
         console.log(req)
         console.log(user)
-
-        res.status(200).json(user)
  })
 
 
