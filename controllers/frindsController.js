@@ -119,11 +119,9 @@ const { User } = require("../models/User")
 
  module.exports.addNewFrind = asyncHandler(async (req, res) => {
 
-    try {
-        const loggedInUser = req.user.id
-        const { id: userId } = req.params
+        const userId = req.params.id
     
-        let user = await User.findById(loggedInUser)
+        let user = await User.findById(req.user.id).lean()
         if (!user) {
             return res.status(404).json({ message: "user not found"})
         }
@@ -131,36 +129,33 @@ const { User } = require("../models/User")
         const isUserFrind = user.requestFrinds.find((user) => user.toString() === userId)
     
         if (isUserFrind) {
-            const addNewFrind = await User.findByIdAndUpdate(loggedInUser, {
+            user = await User.findByIdAndUpdate(req.user.id, {
                 $pull: {
-                    requestFrinds: userId,
+                    requestFrinds: req.params.id,
                 },
                 $push: {
-                    frinds: userId,
+                    frinds: req.params.id,
                 }
             }, {
                 new: true
             })
 
-            const addReqToFrind = await User.findByIdAndUpdate(userId, {
+            user = await User.findByIdAndUpdate(req.params.id, {
                 $push: {
-                    frinds: loggedInUser,
+                    frinds: req.user.id,
                 },
                 $pull: {
-                    sendRequist: loggedInUser,
+                    sendRequist: req.user.id,
                 }
             },{
                 new: true
             }).select('-password')
 
-            return res.status(200).json(addReqToFrind)
+           res.status(200).json(user)
         } else {
             return res.status(404).json({message: "not access"})
         }
-    } catch (error) {
-        throw new Error(error)
-    }
-
+   
  })
 
 
