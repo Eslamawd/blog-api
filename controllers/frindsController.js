@@ -173,10 +173,10 @@ const { User } = require("../models/User")
  ------------------------------------------------*/
 
  module.exports.deleteRequist = asyncHandler(async (req, res) => {
-        const loggedInUser = req.user.id
-        const { id: userId } = req.params
     
-        let user = await User.findById(loggedInUser)
+        const  userId  = req.params.id
+    
+        let user = await User.findById(req.user.id).lean()
         if (!user) {
             return res.status(404).json({ message: "user not found"})
         }
@@ -187,36 +187,38 @@ const { User } = require("../models/User")
 
     
         if (isUserFrind) {
-          user = await User.findByIdAndUpdate(loggedInUser, {
+
+          user = await User.findByIdAndUpdate(req.user.id, {
                 $pull: {
-                    requestFrinds: userId,
+                    requestFrinds: req.params.id,
                 },
             }, {
                 new: true
             })
 
-            user = await User.findByIdAndUpdate(userId, {
+            user = await User.findByIdAndUpdate(req.params.id, {
                 $pull: {
-                    sendRequist: loggedInUser,
+                    sendRequist: req.user.id,
                 }
             },{
                 new: true
-            }).select(password)
+            }).select('-password')
             
              res.status(200).json(user)
 
         } else if(isUserRequist) {
-            user = await User.findByIdAndUpdate(loggedInUser, {
+
+            user = await User.findByIdAndUpdate(req.user.id, {
                 $pull: {
-                    sendRequist: userId,
+                    sendRequist: req.params.id,
                 },
             }, {
                 new: true
             })
 
-            user = await User.findByIdAndUpdate(userId, {
+            user = await User.findByIdAndUpdate(req.params.id, {
                 $pull: {
-                    requestFrinds: loggedInUser,
+                    requestFrinds: req.user.id,
                 }
             },{
                 new: true
@@ -225,17 +227,18 @@ const { User } = require("../models/User")
          res.status(200).json(user)
 
         } else if(isUserFrindly) {
-             user = await User.findByIdAndUpdate(loggedInUser, {
+
+             user = await User.findByIdAndUpdate(req.user.id, {
                 $pull: {
-                    frinds: userId,
+                    frinds: req.params.id,
                 },
             }, {
                 new: true
             })
 
-            user= await User.findByIdAndUpdate(userId, {
+            user = await User.findByIdAndUpdate(req.params.id, {
                 $pull: {
-                    frinds: loggedInUser,
+                    frinds: req.user.id,
                 }
             },{
                 new: true
@@ -243,7 +246,7 @@ const { User } = require("../models/User")
             
           res.status(200).json(user)
         } else {
-        res.status(404).json({message: "not access"})
+        res.status(403).json({message: "not access"})
         }
    
 
