@@ -181,9 +181,9 @@ const { User } = require("../models/User")
             return res.status(404).json({ message: "user not found"})
         }
     
-        const isUserFrind = user.requestFrinds.find((user) => user.toString() === userId)
-        const isUserRequist = user.sendRequist.find((user) => user.toString() === userId)
-        const isUserFrindly = user.frinds.find((user) => user.toString() === userId)
+        const isUserFrind = user.requestFrinds.find((userI) => userI.toString() === userId)
+        const isUserRequist = user.sendRequist.find((userI) => userI.toString() === userId)
+        const isUserFrindly = user.frinds.find((userI) => userI.toString() === userId)
 
     
         if (isUserFrind) {
@@ -203,7 +203,7 @@ const { User } = require("../models/User")
                 new: true
             }).select(password)
             
-            return res.status(200).json(user)
+             res.status(200).json(user)
 
         } else if(isUserRequist) {
             user = await User.findByIdAndUpdate(loggedInUser, {
@@ -222,7 +222,7 @@ const { User } = require("../models/User")
                 new: true
             }).select('-password')
          
-            return res.status(200).json(user)
+         res.status(200).json(user)
 
         } else if(isUserFrindly) {
              user = await User.findByIdAndUpdate(loggedInUser, {
@@ -241,9 +241,9 @@ const { User } = require("../models/User")
                 new: true
             }).select('-password')
             
-            return res.status(200).json(user)
+          res.status(200).json(user)
         } else {
-            return res.status(404).json({message: "not access"})
+        res.status(404).json({message: "not access"})
         }
    
 
