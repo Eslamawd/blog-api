@@ -173,8 +173,6 @@ const { User } = require("../models/User")
  ------------------------------------------------*/
 
  module.exports.deleteRequist = asyncHandler(async (req, res) => {
-
-    try {
         const loggedInUser = req.user.id
         const { id: userId } = req.params
     
@@ -189,7 +187,7 @@ const { User } = require("../models/User")
 
     
         if (isUserFrind) {
-          const deleteReq = await User.findByIdAndUpdate(loggedInUser, {
+          user = await User.findByIdAndUpdate(loggedInUser, {
                 $pull: {
                     requestFrinds: userId,
                 },
@@ -197,7 +195,7 @@ const { User } = require("../models/User")
                 new: true
             })
 
-            const deleteSenReq = await User.findByIdAndUpdate(userId, {
+            user = await User.findByIdAndUpdate(userId, {
                 $pull: {
                     sendRequist: loggedInUser,
                 }
@@ -205,10 +203,10 @@ const { User } = require("../models/User")
                 new: true
             }).select(password)
             
-            return res.status(200).json(deleteSenReq)
+            return res.status(200).json(user)
 
         } else if(isUserRequist) {
-            const deleteReq = await User.findByIdAndUpdate(loggedInUser, {
+            user = await User.findByIdAndUpdate(loggedInUser, {
                 $pull: {
                     sendRequist: userId,
                 },
@@ -216,7 +214,7 @@ const { User } = require("../models/User")
                 new: true
             })
 
-            const deleteSenReq = await User.findByIdAndUpdate(userId, {
+            user = await User.findByIdAndUpdate(userId, {
                 $pull: {
                     requestFrinds: loggedInUser,
                 }
@@ -224,10 +222,10 @@ const { User } = require("../models/User")
                 new: true
             }).select('-password')
          
-            return res.status(200).json(deleteSenReq)
+            return res.status(200).json(user)
 
         } else if(isUserFrindly) {
-            const deleteFrind = await User.findByIdAndUpdate(loggedInUser, {
+             user = await User.findByIdAndUpdate(loggedInUser, {
                 $pull: {
                     frinds: userId,
                 },
@@ -235,7 +233,7 @@ const { User } = require("../models/User")
                 new: true
             })
 
-            const deleteYfrind = await User.findByIdAndUpdate(userId, {
+            user= await User.findByIdAndUpdate(userId, {
                 $pull: {
                     frinds: loggedInUser,
                 }
@@ -243,13 +241,10 @@ const { User } = require("../models/User")
                 new: true
             }).select('-password')
             
-            return res.status(200).json(deleteYfrind)
+            return res.status(200).json(user)
         } else {
             return res.status(404).json({message: "not access"})
         }
-    } catch (error) {
-        throw new Error(error)
-  
-    }
+   
 
  })
