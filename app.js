@@ -51,9 +51,10 @@ app.use(cors({
 
 //socket io
 io.on('connection', (socket) => {
-  console.log(socket)
+  require("./socketIo/notifec")(socket);
+  require("./socketIo/frind")(socket, io);
 
-})
+});
 
 
 //Routes
