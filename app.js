@@ -49,9 +49,11 @@ app.use(cors({
   origin: "https://blog-side.onrender.com"
 }));
 
+
 //socket io
+io.onlineUser = {}
 io.on('connection', (socket) => {
-  require("./socketIo/notifec")(socket);
+  require("./socketIo/notifec")(socket, io);
   require("./socketIo/frind")(socket, io);
 
 });
@@ -65,6 +67,7 @@ app.use("/api/comments", require("./routes/commentsRoute"));
 app.use("/api/categories", require("./routes/categoryRoute"));
 app.use("/api/password", require("./routes/passwordRoute"));
 app.use("/api/frind", require("./routes/frindsRoute"));
+app.use("/api/chats", require("./routes/chatRoute"));
 
 // Error handeler 
 app.use(notFound);

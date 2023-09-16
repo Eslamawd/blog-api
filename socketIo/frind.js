@@ -1,3 +1,5 @@
+const { getOnlineFrinds } = require("../controllers/frindsController")
+
 module.exports = (socket, io) => {
     socket.on('sendFrindRequist', data => {
         io.to(data.userId).emit('newFrindRequist', {
@@ -5,6 +7,12 @@ module.exports = (socket, io) => {
             profilePhoto: data.profilePhoto,
             username: data.username
 
+        })
+    })
+    socket.on('getOnlineUser', id => {
+        getOnlineFrinds(id).then(frinds => {
+            let onlineUsers = frinds.filter(frind => io.onlineUser[frind._id])
+            socket.emit('onlineFrinds', onlineUsers)
         })
     })
 

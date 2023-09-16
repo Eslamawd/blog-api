@@ -72,6 +72,14 @@ const UserSchema = new mongoose.Schema({
 
         },
     ],
+    chats: 
+    [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Chat",
+
+        },
+    ],
 }, {
     timestamps: true,
     toJSON: { virtuals: true },

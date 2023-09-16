@@ -18,8 +18,8 @@ const MessagesSchema = new mongoose.Schema({
 
         },
     timestamps: {
-           type: String,
-           default: new Date.now()
+           type: Number,
+           default: Date.now()
     }
     
     
@@ -32,18 +32,19 @@ const MessagesSchema = new mongoose.Schema({
 
 /////// populite comment for thes post \\\\\\\
 
-MessagesSchema.virtual("userChats", {
-    ref: "User",
+MessagesSchema.virtual("userMessage", {
+    ref: "Chat",
     foreignField: "_id",
-    localField: "userInChat",
+    localField: "chatId"
+    
 })
 
 
 
-const Chats = mongoose.model("Chats", MessagesSchema)
+const Message = mongoose.model("Message", MessagesSchema)
 
 
 
 module.exports = {
-    Chats
+    Message
 }

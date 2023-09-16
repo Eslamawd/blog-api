@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler")
 const { User } = require("../models/User")
+const { Chat } = require("../models/Chat")
 
 
 
@@ -87,6 +88,18 @@ const { User } = require("../models/User")
  * @method GET
  * @access private (only user)
  ------------------------------------------------*/
+ module.exports.getOnlineFrinds = async(id) => {
+    try {
+        
+        let user = await User.findById(id).populate("frind", ["username", "profilePhoto"])
+        const frind = user.frind
+        return frind;
+        
+    } catch (error) {
+        throw new Error(error)
+        
+    }
+ }
  module.exports.getAllUsersFrends = asyncHandler(async (req, res) => {
     try {
         const loggedInUser = req.user.id
@@ -125,6 +138,12 @@ const { User } = require("../models/User")
         if (!user) {
             return res.status(404).json({ message: "user not found"})
         }
+
+        let newChat = new Chat({
+            userInChat: [req.user.id, req.params.id]
+        })
+        
+        const chat = await newChat.save()
     
         const isUserFrind = user.requestFrinds.find((user) => user.toString() === userId)
     
@@ -135,7 +154,9 @@ const { User } = require("../models/User")
                 },
                 $push: {
                     frinds: req.params.id,
+                    chats: chat._id
                 }
+                
             }, {
                 new: true
             })
@@ -143,6 +164,7 @@ const { User } = require("../models/User")
             user = await User.findByIdAndUpdate(req.params.id, {
                 $push: {
                     frinds: req.user.id,
+                    chats: chat._id
                 },
                 $pull: {
                     sendRequist: req.user.id,
@@ -150,6 +172,7 @@ const { User } = require("../models/User")
             },{
                 new: true
             }).select('-password')
+
 
            res.status(200).json(user)
         } else {
