@@ -3,13 +3,12 @@ const { Chat } = require("../models/Chat")
 const { Message } = require("../models/Messages")
 const { User } = require("../models/User")
 
-module.exports.getMessagOnProfile = async(user, frind) => {
+exports.getMessagOnProfile = async(user, frind) => {
 let chat = await Chat.findOne({
     userInChat: {
-                $all: [ user, frind ]
+                $all: [user, frind]
     }
 }).populate('userInChat', ['profilePhoto username'])
- chat.userInChat.find(f => f._id != user)
 return chat;
 }
 
@@ -32,30 +31,25 @@ return allMessage;
 
 
 module.exports.getChat = asyncHandler(async(req, res) => {
+    
     const user = req.user.id
     const frind = req.params.id
     const chat = getMessagOnProfile(user, frind)
 
-    if(chat) {
-       const message = await Message.find({
-            chatId: chat._id,
-        }).populate({
-            path: 'chatId',
-            populate: {
-                path: 'userInChat',
-                model: 'User',
-                select: 'username profilePhoto',
-            }
-        })
-
-        if(!message) {
+    const message = await Message.find({
+         chatId: chat._id,
+     }).populate({
+         path: 'chatId',
+         populate: {
+             path: 'userInChat',
+             model: 'User',
+             select: 'username profilePhoto',
+         }
+     })
+    if(!message) {
             res.status(200).json(chat)
-        } else {
-
-            res.status(200).json(message)
         }
-
-    } else {
+     else {
         return res.status(404).json({message: "not found"})
     }
 })
