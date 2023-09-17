@@ -41,7 +41,7 @@ module.exports.getChat = asyncHandler(async(req, res) => {
          chatId: chat._id,
      })
 
-    if(!message && chat) {
+    if(!message) {
             res.status(200).json(chat)
         }
         else if (message) {
