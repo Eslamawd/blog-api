@@ -3,8 +3,8 @@ const { Chat } = require("../models/Chat")
 const { Message } = require("../models/Messages")
 const { User } = require("../models/User")
 
-exports.getMessagOnProfile = async(user, frind) => {
-let chat = await Chat.findOne({
+function getMessagOnProfile (user, frind) {
+let chat =  Chat.findOne({
     userInChat: {
                 $all: [user, frind]
     }
@@ -31,7 +31,7 @@ return allMessage;
 
 
 module.exports.getChat = asyncHandler(async(req, res) => {
-    
+
     const user = req.user.id
     const frind = req.params.id
     const chat = getMessagOnProfile(user, frind)
