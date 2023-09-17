@@ -35,7 +35,11 @@ module.exports.getChat = asyncHandler(async(req, res) => {
         userInChat: {
                     $all: [ req.user.id, req.params.id ]
         }
-    }).populate('userInChat', ['profilePhoto username'])
+    }).populate({   
+        path: 'userInChat',
+        model: 'User',
+        select: 'username profilePhoto'
+     })
 
     const message = await Message.find({
          chatId: chat._id,
