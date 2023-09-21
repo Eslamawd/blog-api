@@ -25,27 +25,18 @@ const allMessage = message[0].chatId.userInChat.find(frind => frind._id != user)
 return allMessage;
 }
 
-module.exports.sendNewMessage = async(data) => {
-    try {
-
-
-        const message =  new Message({
+exports.sendNewMessage = async(data) => {
+    
+    
+        const message =  await Message.create({
             chatId: data.chatId,
             content: data.content,
             sender: data.sender,
             timestamps: Date.now,
         })
 
-       const data = await message.save;
-
-       return data;
+       return message;
         
-                
-        
-    } catch (error) {
-        throw new Error(error)
-        
-    }
  }
 
 
