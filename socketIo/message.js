@@ -12,13 +12,12 @@ module.exports = (socket, io) => {
                 sender: data.sender,
                 content: data.content
     
-            }).to(data.frindId).emit('newMessage', {
+            }),
+            io.to(data.frindId).emit('newMessage', {
                 chatId: data.chatId,
                 sender: data.sender,
                 content: data.content
-            }
-               
-            )
+            })
         )
         
     })

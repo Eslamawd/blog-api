@@ -36,7 +36,9 @@ module.exports.sendNewMessage = async(data) => {
             timestamps: Date.now,
         })
 
-        message.save
+       const data = await message.save;
+
+       return data;
         
                 
         
