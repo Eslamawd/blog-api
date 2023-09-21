@@ -55,6 +55,7 @@ io.onlineUser = {}
 io.on('connection', (socket) => {
   require("./socketIo/notifec")(socket, io);
   require("./socketIo/frind")(socket, io);
+  require("./socketIo/message")(socket, io);
 
 });
 
