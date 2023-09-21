@@ -27,12 +27,12 @@ return allMessage;
 
 exports.sendNewMessage = async(data) => {
     
-    
+
         const message =  await Message.create({
             chatId: data.chatId,
             content: data.content,
             sender: data.sender,
-            timestamps: Date.now,
+            timestamps: Date.now(),
         })
 
        return message;
