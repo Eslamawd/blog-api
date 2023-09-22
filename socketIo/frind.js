@@ -12,7 +12,7 @@ module.exports = (socket, io) => {
     socket.on('getOnlineUser', id => {
         getOnlineFrinds(id).then(frinds => {
             let onlineUsers = frinds.filter(frind => io.onlineUser[frind._id])
-            socket.emit('onlineFrinds', onlineUsers)
+            io.to(id).socket.emit('onlineFrinds', onlineUsers)
         })
     })
 
