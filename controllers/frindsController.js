@@ -102,9 +102,7 @@ const { Chat } = require("../models/Chat")
  }
  module.exports.getAllUsersFrends = asyncHandler(async (req, res) => {
     try {
-        const loggedInUser = req.user.id
-        
-        let user = await User.findById(loggedInUser).populate("frind", ["username", "profilePhoto"])
+        let user = await User.findById(req.user.id).populate("frind", ["username", "profilePhoto"])
 
         const users = user.frind
     
